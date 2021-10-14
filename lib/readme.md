@@ -6,5 +6,5 @@ Based on https://github.com/tronprotocol/java-tron/blob/master/protocol/src/main
 But just with any.proto
 
 mkdir lib
-protoc -I=. --elixir_out=plugins=grpc:./lib/ ./core/*.proto ./api/*.proto
-protoc -I=. --elixir_out=plugins=grpc:./lib protobuf-3.5.1/src/google/protobuf/any.proto 
+protoc -I=. --elixir_out=plugins=grpc:./lib/ ./core/*.proto ./api/*.proto ./core/contract/*.proto ./core/tron/*.proto
+protoc -I=. --elixir_out=plugins=grpc:./lib protobuf-3.5.1/src/google/protobuf/any.proto
