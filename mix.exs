@@ -22,7 +22,7 @@ defmodule TronProtocolElixir.MixProject do
   defp deps do
     [
       {:grpc, github: "elixir-grpc/grpc"},
-      {:google_protos, "~> 0.1.0"},
+      {:google_protos, "~> 0.3.0"},
       {:cowlib, "~> 2.11.0", override: true}
     ]
   end

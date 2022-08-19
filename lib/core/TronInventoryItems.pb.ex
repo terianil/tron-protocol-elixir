@@ -1,13 +1,6 @@
 defmodule Protocol.InventoryItems do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          type: integer,
-          items: [binary]
-        }
-
-  defstruct [:type, :items]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :type, 1, type: :int32
   field :items, 2, repeated: true, type: :bytes

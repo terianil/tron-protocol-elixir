@@ -1,100 +1,47 @@
 defmodule Protocol.Endpoint do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          address: binary,
-          port: integer,
-          nodeId: binary
-        }
-
-  defstruct [:address, :port, :nodeId]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :address, 1, type: :bytes
   field :port, 2, type: :int32
   field :nodeId, 3, type: :bytes
 end
-
 defmodule Protocol.PingMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          from: Protocol.Endpoint.t() | nil,
-          to: Protocol.Endpoint.t() | nil,
-          version: integer,
-          timestamp: integer
-        }
-
-  defstruct [:from, :to, :version, :timestamp]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :from, 1, type: Protocol.Endpoint
   field :to, 2, type: Protocol.Endpoint
   field :version, 3, type: :int32
   field :timestamp, 4, type: :int64
 end
-
 defmodule Protocol.PongMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          from: Protocol.Endpoint.t() | nil,
-          echo: integer,
-          timestamp: integer
-        }
-
-  defstruct [:from, :echo, :timestamp]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :from, 1, type: Protocol.Endpoint
   field :echo, 2, type: :int32
   field :timestamp, 3, type: :int64
 end
-
 defmodule Protocol.FindNeighbours do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          from: Protocol.Endpoint.t() | nil,
-          targetId: binary,
-          timestamp: integer
-        }
-
-  defstruct [:from, :targetId, :timestamp]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :from, 1, type: Protocol.Endpoint
   field :targetId, 2, type: :bytes
   field :timestamp, 3, type: :int64
 end
-
 defmodule Protocol.Neighbours do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          from: Protocol.Endpoint.t() | nil,
-          neighbours: [Protocol.Endpoint.t()],
-          timestamp: integer
-        }
-
-  defstruct [:from, :neighbours, :timestamp]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :from, 1, type: Protocol.Endpoint
   field :neighbours, 2, repeated: true, type: Protocol.Endpoint
   field :timestamp, 3, type: :int64
 end
-
 defmodule Protocol.BackupMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          flag: boolean,
-          priority: integer
-        }
-
-  defstruct [:flag, :priority]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :flag, 1, type: :bool
   field :priority, 2, type: :int32

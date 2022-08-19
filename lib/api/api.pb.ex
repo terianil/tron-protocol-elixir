@@ -1,450 +1,207 @@
 defmodule Protocol.Return.ResponseCode do
   @moduledoc false
-  use Protobuf, enum: true, syntax: :proto3
-
-  @type t ::
-          integer
-          | :SUCCESS
-          | :SIGERROR
-          | :CONTRACT_VALIDATE_ERROR
-          | :CONTRACT_EXE_ERROR
-          | :BANDWITH_ERROR
-          | :DUP_TRANSACTION_ERROR
-          | :TAPOS_ERROR
-          | :TOO_BIG_TRANSACTION_ERROR
-          | :TRANSACTION_EXPIRATION_ERROR
-          | :SERVER_BUSY
-          | :NO_CONNECTION
-          | :NOT_ENOUGH_EFFECTIVE_CONNECTION
-          | :OTHER_ERROR
+  use Protobuf, enum: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :SUCCESS, 0
-
   field :SIGERROR, 1
-
   field :CONTRACT_VALIDATE_ERROR, 2
-
   field :CONTRACT_EXE_ERROR, 3
-
   field :BANDWITH_ERROR, 4
-
   field :DUP_TRANSACTION_ERROR, 5
-
   field :TAPOS_ERROR, 6
-
   field :TOO_BIG_TRANSACTION_ERROR, 7
-
   field :TRANSACTION_EXPIRATION_ERROR, 8
-
   field :SERVER_BUSY, 9
-
   field :NO_CONNECTION, 10
-
   field :NOT_ENOUGH_EFFECTIVE_CONNECTION, 11
-
   field :OTHER_ERROR, 20
 end
-
 defmodule Protocol.TransactionSignWeight.Result.ResponseCode do
   @moduledoc false
-  use Protobuf, enum: true, syntax: :proto3
-
-  @type t ::
-          integer
-          | :ENOUGH_PERMISSION
-          | :NOT_ENOUGH_PERMISSION
-          | :SIGNATURE_FORMAT_ERROR
-          | :COMPUTE_ADDRESS_ERROR
-          | :PERMISSION_ERROR
-          | :OTHER_ERROR
+  use Protobuf, enum: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ENOUGH_PERMISSION, 0
-
   field :NOT_ENOUGH_PERMISSION, 1
-
   field :SIGNATURE_FORMAT_ERROR, 2
-
   field :COMPUTE_ADDRESS_ERROR, 3
-
   field :PERMISSION_ERROR, 4
-
   field :OTHER_ERROR, 20
 end
-
 defmodule Protocol.TransactionApprovedList.Result.ResponseCode do
   @moduledoc false
-  use Protobuf, enum: true, syntax: :proto3
-  @type t :: integer | :SUCCESS | :SIGNATURE_FORMAT_ERROR | :COMPUTE_ADDRESS_ERROR | :OTHER_ERROR
+  use Protobuf, enum: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :SUCCESS, 0
-
   field :SIGNATURE_FORMAT_ERROR, 1
-
   field :COMPUTE_ADDRESS_ERROR, 2
-
   field :OTHER_ERROR, 20
 end
-
 defmodule Protocol.Return do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          result: boolean,
-          code: Protocol.Return.ResponseCode.t(),
-          message: binary
-        }
-
-  defstruct [:result, :code, :message]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :result, 1, type: :bool
   field :code, 2, type: Protocol.Return.ResponseCode, enum: true
   field :message, 3, type: :bytes
 end
-
 defmodule Protocol.BlockReference do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          block_num: integer,
-          block_hash: binary
-        }
-
-  defstruct [:block_num, :block_hash]
-
-  field :block_num, 1, type: :int64
-  field :block_hash, 2, type: :bytes
+  field :block_num, 1, type: :int64, json_name: "blockNum"
+  field :block_hash, 2, type: :bytes, json_name: "blockHash"
 end
-
 defmodule Protocol.WitnessList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          witnesses: [Protocol.Witness.t()]
-        }
-
-  defstruct [:witnesses]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :witnesses, 1, repeated: true, type: Protocol.Witness
 end
-
 defmodule Protocol.ProposalList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          proposals: [Protocol.Proposal.t()]
-        }
-
-  defstruct [:proposals]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :proposals, 1, repeated: true, type: Protocol.Proposal
 end
-
 defmodule Protocol.ExchangeList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          exchanges: [Protocol.Exchange.t()]
-        }
-
-  defstruct [:exchanges]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :exchanges, 1, repeated: true, type: Protocol.Exchange
 end
-
 defmodule Protocol.AssetIssueList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          assetIssue: [Protocol.AssetIssueContract.t()]
-        }
-
-  defstruct [:assetIssue]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :assetIssue, 1, repeated: true, type: Protocol.AssetIssueContract
 end
-
 defmodule Protocol.BlockList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          block: [Protocol.Block.t()]
-        }
-
-  defstruct [:block]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :block, 1, repeated: true, type: Protocol.Block
 end
-
 defmodule Protocol.TransactionList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transaction: [Protocol.Transaction.t()]
-        }
-
-  defstruct [:transaction]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transaction, 1, repeated: true, type: Protocol.Transaction
 end
-
 defmodule Protocol.TransactionIdList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          txId: [String.t()]
-        }
-
-  defstruct [:txId]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :txId, 1, repeated: true, type: :string
 end
-
 defmodule Protocol.DelegatedResourceMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          fromAddress: binary,
-          toAddress: binary
-        }
-
-  defstruct [:fromAddress, :toAddress]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :fromAddress, 1, type: :bytes
   field :toAddress, 2, type: :bytes
 end
-
 defmodule Protocol.DelegatedResourceList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          delegatedResource: [Protocol.DelegatedResource.t()]
-        }
-
-  defstruct [:delegatedResource]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :delegatedResource, 1, repeated: true, type: Protocol.DelegatedResource
 end
-
 defmodule Protocol.NodeList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          nodes: [Protocol.Node.t()]
-        }
-
-  defstruct [:nodes]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :nodes, 1, repeated: true, type: Protocol.Node
 end
-
 defmodule Protocol.Node do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          address: Protocol.Address.t() | nil
-        }
-
-  defstruct [:address]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :address, 1, type: Protocol.Address
 end
-
 defmodule Protocol.Address do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          host: binary,
-          port: integer
-        }
-
-  defstruct [:host, :port]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :host, 1, type: :bytes
   field :port, 2, type: :int32
 end
-
 defmodule Protocol.EmptyMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-  @type t :: %__MODULE__{}
-
-  defstruct []
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 end
-
 defmodule Protocol.NumberMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          num: integer
-        }
-
-  defstruct [:num]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :num, 1, type: :int64
 end
-
 defmodule Protocol.BytesMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          value: binary
-        }
-
-  defstruct [:value]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :value, 1, type: :bytes
 end
-
 defmodule Protocol.TimeMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          beginInMilliseconds: integer,
-          endInMilliseconds: integer
-        }
-
-  defstruct [:beginInMilliseconds, :endInMilliseconds]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :beginInMilliseconds, 1, type: :int64
   field :endInMilliseconds, 2, type: :int64
 end
+defmodule Protocol.BlockReq do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
+  field :id_or_num, 1, type: :string, json_name: "idOrNum"
+  field :detail, 2, type: :bool
+end
 defmodule Protocol.BlockLimit do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          startNum: integer,
-          endNum: integer
-        }
-
-  defstruct [:startNum, :endNum]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :startNum, 1, type: :int64
   field :endNum, 2, type: :int64
 end
-
 defmodule Protocol.TransactionLimit do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transactionId: binary,
-          limitNum: integer
-        }
-
-  defstruct [:transactionId, :limitNum]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transactionId, 1, type: :bytes
   field :limitNum, 2, type: :int64
 end
-
 defmodule Protocol.AccountPaginated do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          account: Protocol.Account.t() | nil,
-          offset: integer,
-          limit: integer
-        }
-
-  defstruct [:account, :offset, :limit]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :account, 1, type: Protocol.Account
   field :offset, 2, type: :int64
   field :limit, 3, type: :int64
 end
-
 defmodule Protocol.TimePaginatedMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          timeMessage: Protocol.TimeMessage.t() | nil,
-          offset: integer,
-          limit: integer
-        }
-
-  defstruct [:timeMessage, :offset, :limit]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :timeMessage, 1, type: Protocol.TimeMessage
   field :offset, 2, type: :int64
   field :limit, 3, type: :int64
 end
-
 defmodule Protocol.AccountNetMessage.AssetNetUsedEntry do
   @moduledoc false
-  use Protobuf, map: true, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          key: String.t(),
-          value: integer
-        }
-
-  defstruct [:key, :value]
+  use Protobuf, map: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :key, 1, type: :string
   field :value, 2, type: :int64
 end
-
 defmodule Protocol.AccountNetMessage.AssetNetLimitEntry do
   @moduledoc false
-  use Protobuf, map: true, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          key: String.t(),
-          value: integer
-        }
-
-  defstruct [:key, :value]
+  use Protobuf, map: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :key, 1, type: :string
   field :value, 2, type: :int64
 end
-
 defmodule Protocol.AccountNetMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          freeNetUsed: integer,
-          freeNetLimit: integer,
-          NetUsed: integer,
-          NetLimit: integer,
-          assetNetUsed: %{String.t() => integer},
-          assetNetLimit: %{String.t() => integer},
-          TotalNetLimit: integer,
-          TotalNetWeight: integer
-        }
-
-  defstruct [
-    :freeNetUsed,
-    :freeNetLimit,
-    :NetUsed,
-    :NetLimit,
-    :assetNetUsed,
-    :assetNetLimit,
-    :TotalNetLimit,
-    :TotalNetWeight
-  ]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :freeNetUsed, 1, type: :int64
   field :freeNetLimit, 2, type: :int64
@@ -464,80 +221,23 @@ defmodule Protocol.AccountNetMessage do
   field :TotalNetLimit, 7, type: :int64
   field :TotalNetWeight, 8, type: :int64
 end
-
 defmodule Protocol.AccountResourceMessage.AssetNetUsedEntry do
   @moduledoc false
-  use Protobuf, map: true, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          key: String.t(),
-          value: integer
-        }
-
-  defstruct [:key, :value]
+  use Protobuf, map: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :key, 1, type: :string
   field :value, 2, type: :int64
 end
-
 defmodule Protocol.AccountResourceMessage.AssetNetLimitEntry do
   @moduledoc false
-  use Protobuf, map: true, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          key: String.t(),
-          value: integer
-        }
-
-  defstruct [:key, :value]
+  use Protobuf, map: true, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :key, 1, type: :string
   field :value, 2, type: :int64
 end
-
 defmodule Protocol.AccountResourceMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          freeNetUsed: integer,
-          freeNetLimit: integer,
-          NetUsed: integer,
-          NetLimit: integer,
-          assetNetUsed: %{String.t() => integer},
-          assetNetLimit: %{String.t() => integer},
-          TotalNetLimit: integer,
-          TotalNetWeight: integer,
-          TotalTronPowerWeight: integer,
-          tronPowerUsed: integer,
-          tronPowerLimit: integer,
-          EnergyUsed: integer,
-          EnergyLimit: integer,
-          TotalEnergyLimit: integer,
-          TotalEnergyWeight: integer,
-          storageUsed: integer,
-          storageLimit: integer
-        }
-
-  defstruct [
-    :freeNetUsed,
-    :freeNetLimit,
-    :NetUsed,
-    :NetLimit,
-    :assetNetUsed,
-    :assetNetLimit,
-    :TotalNetLimit,
-    :TotalNetWeight,
-    :TotalTronPowerWeight,
-    :tronPowerUsed,
-    :tronPowerLimit,
-    :EnergyUsed,
-    :EnergyLimit,
-    :TotalEnergyLimit,
-    :TotalEnergyWeight,
-    :storageUsed,
-    :storageLimit
-  ]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :freeNetUsed, 1, type: :int64
   field :freeNetLimit, 2, type: :int64
@@ -566,669 +266,318 @@ defmodule Protocol.AccountResourceMessage do
   field :storageUsed, 21, type: :int64
   field :storageLimit, 22, type: :int64
 end
-
 defmodule Protocol.PaginatedMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          offset: integer,
-          limit: integer
-        }
-
-  defstruct [:offset, :limit]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :offset, 1, type: :int64
   field :limit, 2, type: :int64
 end
-
 defmodule Protocol.EasyTransferMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          passPhrase: binary,
-          toAddress: binary,
-          amount: integer
-        }
-
-  defstruct [:passPhrase, :toAddress, :amount]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :passPhrase, 1, type: :bytes
   field :toAddress, 2, type: :bytes
   field :amount, 3, type: :int64
 end
-
 defmodule Protocol.EasyTransferAssetMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          passPhrase: binary,
-          toAddress: binary,
-          assetId: String.t(),
-          amount: integer
-        }
-
-  defstruct [:passPhrase, :toAddress, :assetId, :amount]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :passPhrase, 1, type: :bytes
   field :toAddress, 2, type: :bytes
   field :assetId, 3, type: :string
   field :amount, 4, type: :int64
 end
-
 defmodule Protocol.EasyTransferByPrivateMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          privateKey: binary,
-          toAddress: binary,
-          amount: integer
-        }
-
-  defstruct [:privateKey, :toAddress, :amount]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :privateKey, 1, type: :bytes
   field :toAddress, 2, type: :bytes
   field :amount, 3, type: :int64
 end
-
 defmodule Protocol.EasyTransferAssetByPrivateMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          privateKey: binary,
-          toAddress: binary,
-          assetId: String.t(),
-          amount: integer
-        }
-
-  defstruct [:privateKey, :toAddress, :assetId, :amount]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :privateKey, 1, type: :bytes
   field :toAddress, 2, type: :bytes
   field :assetId, 3, type: :string
   field :amount, 4, type: :int64
 end
-
 defmodule Protocol.EasyTransferResponse do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transaction: Protocol.Transaction.t() | nil,
-          result: Protocol.Return.t() | nil,
-          txid: binary
-        }
-
-  defstruct [:transaction, :result, :txid]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transaction, 1, type: Protocol.Transaction
   field :result, 2, type: Protocol.Return
   field :txid, 3, type: :bytes
 end
-
 defmodule Protocol.AddressPrKeyPairMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          address: String.t(),
-          privateKey: String.t()
-        }
-
-  defstruct [:address, :privateKey]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :address, 1, type: :string
   field :privateKey, 2, type: :string
 end
-
 defmodule Protocol.TransactionExtention do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transaction: Protocol.Transaction.t() | nil,
-          txid: binary,
-          constant_result: [binary],
-          result: Protocol.Return.t() | nil,
-          energy_used: integer
-        }
-
-  defstruct [:transaction, :txid, :constant_result, :result, :energy_used]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transaction, 1, type: Protocol.Transaction
   field :txid, 2, type: :bytes
-  field :constant_result, 3, repeated: true, type: :bytes
+  field :constant_result, 3, repeated: true, type: :bytes, json_name: "constantResult"
   field :result, 4, type: Protocol.Return
-  field :energy_used, 5, type: :int64
-end
+  field :energy_used, 5, type: :int64, json_name: "energyUsed"
+  field :logs, 6, repeated: true, type: Protocol.TransactionInfo.Log
 
+  field :internal_transactions, 7,
+    repeated: true,
+    type: Protocol.InternalTransaction,
+    json_name: "internalTransactions"
+end
 defmodule Protocol.BlockExtention do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transactions: [Protocol.TransactionExtention.t()],
-          block_header: Protocol.BlockHeader.t() | nil,
-          blockid: binary
-        }
-
-  defstruct [:transactions, :block_header, :blockid]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transactions, 1, repeated: true, type: Protocol.TransactionExtention
-  field :block_header, 2, type: Protocol.BlockHeader
+  field :block_header, 2, type: Protocol.BlockHeader, json_name: "blockHeader"
   field :blockid, 3, type: :bytes
 end
-
 defmodule Protocol.BlockListExtention do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          block: [Protocol.BlockExtention.t()]
-        }
-
-  defstruct [:block]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :block, 1, repeated: true, type: Protocol.BlockExtention
 end
-
 defmodule Protocol.TransactionListExtention do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transaction: [Protocol.TransactionExtention.t()]
-        }
-
-  defstruct [:transaction]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transaction, 1, repeated: true, type: Protocol.TransactionExtention
 end
-
 defmodule Protocol.BlockIncrementalMerkleTree do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          number: integer,
-          merkleTree: Protocol.IncrementalMerkleTree.t() | nil
-        }
-
-  defstruct [:number, :merkleTree]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :number, 1, type: :int64
   field :merkleTree, 2, type: Protocol.IncrementalMerkleTree
 end
-
 defmodule Protocol.TransactionSignWeight.Result do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          code: Protocol.TransactionSignWeight.Result.ResponseCode.t(),
-          message: String.t()
-        }
-
-  defstruct [:code, :message]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :code, 1, type: Protocol.TransactionSignWeight.Result.ResponseCode, enum: true
   field :message, 2, type: :string
 end
-
 defmodule Protocol.TransactionSignWeight do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          permission: Protocol.Permission.t() | nil,
-          approved_list: [binary],
-          current_weight: integer,
-          result: Protocol.TransactionSignWeight.Result.t() | nil,
-          transaction: Protocol.TransactionExtention.t() | nil
-        }
-
-  defstruct [:permission, :approved_list, :current_weight, :result, :transaction]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :permission, 1, type: Protocol.Permission
-  field :approved_list, 2, repeated: true, type: :bytes
-  field :current_weight, 3, type: :int64
+  field :approved_list, 2, repeated: true, type: :bytes, json_name: "approvedList"
+  field :current_weight, 3, type: :int64, json_name: "currentWeight"
   field :result, 4, type: Protocol.TransactionSignWeight.Result
   field :transaction, 5, type: Protocol.TransactionExtention
 end
-
 defmodule Protocol.TransactionApprovedList.Result do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          code: Protocol.TransactionApprovedList.Result.ResponseCode.t(),
-          message: String.t()
-        }
-
-  defstruct [:code, :message]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :code, 1, type: Protocol.TransactionApprovedList.Result.ResponseCode, enum: true
   field :message, 2, type: :string
 end
-
 defmodule Protocol.TransactionApprovedList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          approved_list: [binary],
-          result: Protocol.TransactionApprovedList.Result.t() | nil,
-          transaction: Protocol.TransactionExtention.t() | nil
-        }
-
-  defstruct [:approved_list, :result, :transaction]
-
-  field :approved_list, 2, repeated: true, type: :bytes
+  field :approved_list, 2, repeated: true, type: :bytes, json_name: "approvedList"
   field :result, 4, type: Protocol.TransactionApprovedList.Result
   field :transaction, 5, type: Protocol.TransactionExtention
 end
-
 defmodule Protocol.IvkDecryptParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          start_block_index: integer,
-          end_block_index: integer,
-          ivk: binary
-        }
-
-  defstruct [:start_block_index, :end_block_index, :ivk]
-
-  field :start_block_index, 1, type: :int64
-  field :end_block_index, 2, type: :int64
+  field :start_block_index, 1, type: :int64, json_name: "startBlockIndex"
+  field :end_block_index, 2, type: :int64, json_name: "endBlockIndex"
   field :ivk, 3, type: :bytes
 end
-
 defmodule Protocol.IvkDecryptAndMarkParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          start_block_index: integer,
-          end_block_index: integer,
-          ivk: binary,
-          ak: binary,
-          nk: binary
-        }
-
-  defstruct [:start_block_index, :end_block_index, :ivk, :ak, :nk]
-
-  field :start_block_index, 1, type: :int64
-  field :end_block_index, 2, type: :int64
+  field :start_block_index, 1, type: :int64, json_name: "startBlockIndex"
+  field :end_block_index, 2, type: :int64, json_name: "endBlockIndex"
   field :ivk, 5, type: :bytes
   field :ak, 3, type: :bytes
   field :nk, 4, type: :bytes
 end
-
 defmodule Protocol.OvkDecryptParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          start_block_index: integer,
-          end_block_index: integer,
-          ovk: binary
-        }
-
-  defstruct [:start_block_index, :end_block_index, :ovk]
-
-  field :start_block_index, 1, type: :int64
-  field :end_block_index, 2, type: :int64
+  field :start_block_index, 1, type: :int64, json_name: "startBlockIndex"
+  field :end_block_index, 2, type: :int64, json_name: "endBlockIndex"
   field :ovk, 3, type: :bytes
 end
-
 defmodule Protocol.DecryptNotes.NoteTx do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          txid: binary,
-          index: integer
-        }
-
-  defstruct [:note, :txid, :index]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
   field :txid, 2, type: :bytes
   field :index, 3, type: :int32
 end
-
 defmodule Protocol.DecryptNotes do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          noteTxs: [Protocol.DecryptNotes.NoteTx.t()]
-        }
-
-  defstruct [:noteTxs]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :noteTxs, 1, repeated: true, type: Protocol.DecryptNotes.NoteTx
 end
-
 defmodule Protocol.DecryptNotesMarked.NoteTx do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          txid: binary,
-          index: integer,
-          is_spend: boolean
-        }
-
-  defstruct [:note, :txid, :index, :is_spend]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
   field :txid, 2, type: :bytes
   field :index, 3, type: :int32
-  field :is_spend, 4, type: :bool
+  field :is_spend, 4, type: :bool, json_name: "isSpend"
 end
-
 defmodule Protocol.DecryptNotesMarked do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          noteTxs: [Protocol.DecryptNotesMarked.NoteTx.t()]
-        }
-
-  defstruct [:noteTxs]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :noteTxs, 1, repeated: true, type: Protocol.DecryptNotesMarked.NoteTx
 end
-
 defmodule Protocol.Note do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          value: integer,
-          payment_address: String.t(),
-          rcm: binary,
-          memo: binary
-        }
-
-  defstruct [:value, :payment_address, :rcm, :memo]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :value, 1, type: :int64
-  field :payment_address, 2, type: :string
+  field :payment_address, 2, type: :string, json_name: "paymentAddress"
   field :rcm, 3, type: :bytes
   field :memo, 4, type: :bytes
 end
-
 defmodule Protocol.SpendNote do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          alpha: binary,
-          voucher: Protocol.IncrementalMerkleVoucher.t() | nil,
-          path: binary
-        }
-
-  defstruct [:note, :alpha, :voucher, :path]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 3, type: Protocol.Note
   field :alpha, 4, type: :bytes
   field :voucher, 5, type: Protocol.IncrementalMerkleVoucher
   field :path, 6, type: :bytes
 end
-
 defmodule Protocol.ReceiveNote do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil
-        }
-
-  defstruct [:note]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
 end
-
 defmodule Protocol.PrivateParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          transparent_from_address: binary,
-          ask: binary,
-          nsk: binary,
-          ovk: binary,
-          from_amount: integer,
-          shielded_spends: [Protocol.SpendNote.t()],
-          shielded_receives: [Protocol.ReceiveNote.t()],
-          transparent_to_address: binary,
-          to_amount: integer,
-          timeout: integer
-        }
-
-  defstruct [
-    :transparent_from_address,
-    :ask,
-    :nsk,
-    :ovk,
-    :from_amount,
-    :shielded_spends,
-    :shielded_receives,
-    :transparent_to_address,
-    :to_amount,
-    :timeout
-  ]
-
-  field :transparent_from_address, 1, type: :bytes
+  field :transparent_from_address, 1, type: :bytes, json_name: "transparentFromAddress"
   field :ask, 2, type: :bytes
   field :nsk, 3, type: :bytes
   field :ovk, 4, type: :bytes
-  field :from_amount, 5, type: :int64
-  field :shielded_spends, 6, repeated: true, type: Protocol.SpendNote
-  field :shielded_receives, 7, repeated: true, type: Protocol.ReceiveNote
-  field :transparent_to_address, 8, type: :bytes
-  field :to_amount, 9, type: :int64
+  field :from_amount, 5, type: :int64, json_name: "fromAmount"
+  field :shielded_spends, 6, repeated: true, type: Protocol.SpendNote, json_name: "shieldedSpends"
+
+  field :shielded_receives, 7,
+    repeated: true,
+    type: Protocol.ReceiveNote,
+    json_name: "shieldedReceives"
+
+  field :transparent_to_address, 8, type: :bytes, json_name: "transparentToAddress"
+  field :to_amount, 9, type: :int64, json_name: "toAmount"
   field :timeout, 10, type: :int64
 end
-
 defmodule Protocol.PrivateParametersWithoutAsk do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          transparent_from_address: binary,
-          ak: binary,
-          nsk: binary,
-          ovk: binary,
-          from_amount: integer,
-          shielded_spends: [Protocol.SpendNote.t()],
-          shielded_receives: [Protocol.ReceiveNote.t()],
-          transparent_to_address: binary,
-          to_amount: integer,
-          timeout: integer
-        }
-
-  defstruct [
-    :transparent_from_address,
-    :ak,
-    :nsk,
-    :ovk,
-    :from_amount,
-    :shielded_spends,
-    :shielded_receives,
-    :transparent_to_address,
-    :to_amount,
-    :timeout
-  ]
-
-  field :transparent_from_address, 1, type: :bytes
+  field :transparent_from_address, 1, type: :bytes, json_name: "transparentFromAddress"
   field :ak, 2, type: :bytes
   field :nsk, 3, type: :bytes
   field :ovk, 4, type: :bytes
-  field :from_amount, 5, type: :int64
-  field :shielded_spends, 6, repeated: true, type: Protocol.SpendNote
-  field :shielded_receives, 7, repeated: true, type: Protocol.ReceiveNote
-  field :transparent_to_address, 8, type: :bytes
-  field :to_amount, 9, type: :int64
+  field :from_amount, 5, type: :int64, json_name: "fromAmount"
+  field :shielded_spends, 6, repeated: true, type: Protocol.SpendNote, json_name: "shieldedSpends"
+
+  field :shielded_receives, 7,
+    repeated: true,
+    type: Protocol.ReceiveNote,
+    json_name: "shieldedReceives"
+
+  field :transparent_to_address, 8, type: :bytes, json_name: "transparentToAddress"
+  field :to_amount, 9, type: :int64, json_name: "toAmount"
   field :timeout, 10, type: :int64
 end
-
 defmodule Protocol.SpendAuthSigParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ask: binary,
-          tx_hash: binary,
-          alpha: binary
-        }
-
-  defstruct [:ask, :tx_hash, :alpha]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ask, 1, type: :bytes
-  field :tx_hash, 2, type: :bytes
+  field :tx_hash, 2, type: :bytes, json_name: "txHash"
   field :alpha, 3, type: :bytes
 end
-
 defmodule Protocol.NfParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          voucher: Protocol.IncrementalMerkleVoucher.t() | nil,
-          ak: binary,
-          nk: binary
-        }
-
-  defstruct [:note, :voucher, :ak, :nk]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
   field :voucher, 2, type: Protocol.IncrementalMerkleVoucher
   field :ak, 3, type: :bytes
   field :nk, 4, type: :bytes
 end
-
 defmodule Protocol.ExpandedSpendingKeyMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ask: binary,
-          nsk: binary,
-          ovk: binary
-        }
-
-  defstruct [:ask, :nsk, :ovk]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ask, 1, type: :bytes
   field :nsk, 2, type: :bytes
   field :ovk, 3, type: :bytes
 end
-
 defmodule Protocol.ViewingKeyMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ak: binary,
-          nk: binary
-        }
-
-  defstruct [:ak, :nk]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ak, 1, type: :bytes
   field :nk, 2, type: :bytes
 end
-
 defmodule Protocol.IncomingViewingKeyMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ivk: binary
-        }
-
-  defstruct [:ivk]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ivk, 1, type: :bytes
 end
-
 defmodule Protocol.DiversifierMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          d: binary
-        }
-
-  defstruct [:d]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :d, 1, type: :bytes
 end
-
 defmodule Protocol.IncomingViewingKeyDiversifierMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ivk: Protocol.IncomingViewingKeyMessage.t() | nil,
-          d: Protocol.DiversifierMessage.t() | nil
-        }
-
-  defstruct [:ivk, :d]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ivk, 1, type: Protocol.IncomingViewingKeyMessage
   field :d, 2, type: Protocol.DiversifierMessage
 end
-
 defmodule Protocol.PaymentAddressMessage do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          d: Protocol.DiversifierMessage.t() | nil,
-          pkD: binary,
-          payment_address: String.t()
-        }
-
-  defstruct [:d, :pkD, :payment_address]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :d, 1, type: Protocol.DiversifierMessage
   field :pkD, 2, type: :bytes
-  field :payment_address, 3, type: :string
+  field :payment_address, 3, type: :string, json_name: "paymentAddress"
 end
-
 defmodule Protocol.ShieldedAddressInfo do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          sk: binary,
-          ask: binary,
-          nsk: binary,
-          ovk: binary,
-          ak: binary,
-          nk: binary,
-          ivk: binary,
-          d: binary,
-          pkD: binary,
-          payment_address: String.t()
-        }
-
-  defstruct [:sk, :ask, :nsk, :ovk, :ak, :nk, :ivk, :d, :pkD, :payment_address]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :sk, 1, type: :bytes
   field :ask, 2, type: :bytes
@@ -1239,22 +588,11 @@ defmodule Protocol.ShieldedAddressInfo do
   field :ivk, 7, type: :bytes
   field :d, 8, type: :bytes
   field :pkD, 9, type: :bytes
-  field :payment_address, 10, type: :string
+  field :payment_address, 10, type: :string, json_name: "paymentAddress"
 end
-
 defmodule Protocol.NoteParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ak: binary,
-          nk: binary,
-          note: Protocol.Note.t() | nil,
-          txid: binary,
-          index: integer
-        }
-
-  defstruct [:ak, :nk, :note, :txid, :index]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ak, 1, type: :bytes
   field :nk, 2, type: :bytes
@@ -1262,48 +600,22 @@ defmodule Protocol.NoteParameters do
   field :txid, 4, type: :bytes
   field :index, 5, type: :int32
 end
-
 defmodule Protocol.SpendResult do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          result: boolean,
-          message: String.t()
-        }
-
-  defstruct [:result, :message]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :result, 1, type: :bool
   field :message, 2, type: :string
 end
-
 defmodule Protocol.TransactionInfoList do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          transactionInfo: [Protocol.TransactionInfo.t()]
-        }
-
-  defstruct [:transactionInfo]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :transactionInfo, 1, repeated: true, type: Protocol.TransactionInfo
 end
-
 defmodule Protocol.SpendNoteTRC20 do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          alpha: binary,
-          root: binary,
-          path: binary,
-          pos: integer
-        }
-
-  defstruct [:note, :alpha, :root, :path, :pos]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
   field :alpha, 2, type: :bytes
@@ -1311,274 +623,163 @@ defmodule Protocol.SpendNoteTRC20 do
   field :path, 4, type: :bytes
   field :pos, 5, type: :int64
 end
-
 defmodule Protocol.PrivateShieldedTRC20Parameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ask: binary,
-          nsk: binary,
-          ovk: binary,
-          from_amount: String.t(),
-          shielded_spends: [Protocol.SpendNoteTRC20.t()],
-          shielded_receives: [Protocol.ReceiveNote.t()],
-          transparent_to_address: binary,
-          to_amount: String.t(),
-          shielded_TRC20_contract_address: binary
-        }
-
-  defstruct [
-    :ask,
-    :nsk,
-    :ovk,
-    :from_amount,
-    :shielded_spends,
-    :shielded_receives,
-    :transparent_to_address,
-    :to_amount,
-    :shielded_TRC20_contract_address
-  ]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ask, 1, type: :bytes
   field :nsk, 2, type: :bytes
   field :ovk, 3, type: :bytes
-  field :from_amount, 4, type: :string
-  field :shielded_spends, 5, repeated: true, type: Protocol.SpendNoteTRC20
-  field :shielded_receives, 6, repeated: true, type: Protocol.ReceiveNote
-  field :transparent_to_address, 7, type: :bytes
-  field :to_amount, 8, type: :string
-  field :shielded_TRC20_contract_address, 9, type: :bytes
-end
+  field :from_amount, 4, type: :string, json_name: "fromAmount"
 
+  field :shielded_spends, 5,
+    repeated: true,
+    type: Protocol.SpendNoteTRC20,
+    json_name: "shieldedSpends"
+
+  field :shielded_receives, 6,
+    repeated: true,
+    type: Protocol.ReceiveNote,
+    json_name: "shieldedReceives"
+
+  field :transparent_to_address, 7, type: :bytes, json_name: "transparentToAddress"
+  field :to_amount, 8, type: :string, json_name: "toAmount"
+
+  field :shielded_TRC20_contract_address, 9,
+    type: :bytes,
+    json_name: "shieldedTRC20ContractAddress"
+end
 defmodule Protocol.PrivateShieldedTRC20ParametersWithoutAsk do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          ak: binary,
-          nsk: binary,
-          ovk: binary,
-          from_amount: String.t(),
-          shielded_spends: [Protocol.SpendNoteTRC20.t()],
-          shielded_receives: [Protocol.ReceiveNote.t()],
-          transparent_to_address: binary,
-          to_amount: String.t(),
-          shielded_TRC20_contract_address: binary
-        }
-
-  defstruct [
-    :ak,
-    :nsk,
-    :ovk,
-    :from_amount,
-    :shielded_spends,
-    :shielded_receives,
-    :transparent_to_address,
-    :to_amount,
-    :shielded_TRC20_contract_address
-  ]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :ak, 1, type: :bytes
   field :nsk, 2, type: :bytes
   field :ovk, 3, type: :bytes
-  field :from_amount, 4, type: :string
-  field :shielded_spends, 5, repeated: true, type: Protocol.SpendNoteTRC20
-  field :shielded_receives, 6, repeated: true, type: Protocol.ReceiveNote
-  field :transparent_to_address, 7, type: :bytes
-  field :to_amount, 8, type: :string
-  field :shielded_TRC20_contract_address, 9, type: :bytes
-end
+  field :from_amount, 4, type: :string, json_name: "fromAmount"
 
+  field :shielded_spends, 5,
+    repeated: true,
+    type: Protocol.SpendNoteTRC20,
+    json_name: "shieldedSpends"
+
+  field :shielded_receives, 6,
+    repeated: true,
+    type: Protocol.ReceiveNote,
+    json_name: "shieldedReceives"
+
+  field :transparent_to_address, 7, type: :bytes, json_name: "transparentToAddress"
+  field :to_amount, 8, type: :string, json_name: "toAmount"
+
+  field :shielded_TRC20_contract_address, 9,
+    type: :bytes,
+    json_name: "shieldedTRC20ContractAddress"
+end
 defmodule Protocol.ShieldedTRC20Parameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          spend_description: [Protocol.SpendDescription.t()],
-          receive_description: [Protocol.ReceiveDescription.t()],
-          binding_signature: binary,
-          message_hash: binary,
-          trigger_contract_input: String.t(),
-          parameter_type: String.t()
-        }
+  field :spend_description, 1,
+    repeated: true,
+    type: Protocol.SpendDescription,
+    json_name: "spendDescription"
 
-  defstruct [
-    :spend_description,
-    :receive_description,
-    :binding_signature,
-    :message_hash,
-    :trigger_contract_input,
-    :parameter_type
-  ]
+  field :receive_description, 2,
+    repeated: true,
+    type: Protocol.ReceiveDescription,
+    json_name: "receiveDescription"
 
-  field :spend_description, 1, repeated: true, type: Protocol.SpendDescription
-  field :receive_description, 2, repeated: true, type: Protocol.ReceiveDescription
-  field :binding_signature, 3, type: :bytes
-  field :message_hash, 4, type: :bytes
-  field :trigger_contract_input, 5, type: :string
-  field :parameter_type, 6, type: :string
+  field :binding_signature, 3, type: :bytes, json_name: "bindingSignature"
+  field :message_hash, 4, type: :bytes, json_name: "messageHash"
+  field :trigger_contract_input, 5, type: :string, json_name: "triggerContractInput"
+  field :parameter_type, 6, type: :string, json_name: "parameterType"
 end
-
 defmodule Protocol.IvkDecryptTRC20Parameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          start_block_index: integer,
-          end_block_index: integer,
-          shielded_TRC20_contract_address: binary,
-          ivk: binary,
-          ak: binary,
-          nk: binary,
-          events: [String.t()]
-        }
+  field :start_block_index, 1, type: :int64, json_name: "startBlockIndex"
+  field :end_block_index, 2, type: :int64, json_name: "endBlockIndex"
 
-  defstruct [
-    :start_block_index,
-    :end_block_index,
-    :shielded_TRC20_contract_address,
-    :ivk,
-    :ak,
-    :nk,
-    :events
-  ]
+  field :shielded_TRC20_contract_address, 3,
+    type: :bytes,
+    json_name: "shieldedTRC20ContractAddress"
 
-  field :start_block_index, 1, type: :int64
-  field :end_block_index, 2, type: :int64
-  field :shielded_TRC20_contract_address, 3, type: :bytes
   field :ivk, 4, type: :bytes
   field :ak, 5, type: :bytes
   field :nk, 6, type: :bytes
   field :events, 7, repeated: true, type: :string
 end
-
 defmodule Protocol.OvkDecryptTRC20Parameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          start_block_index: integer,
-          end_block_index: integer,
-          ovk: binary,
-          shielded_TRC20_contract_address: binary,
-          events: [String.t()]
-        }
-
-  defstruct [
-    :start_block_index,
-    :end_block_index,
-    :ovk,
-    :shielded_TRC20_contract_address,
-    :events
-  ]
-
-  field :start_block_index, 1, type: :int64
-  field :end_block_index, 2, type: :int64
+  field :start_block_index, 1, type: :int64, json_name: "startBlockIndex"
+  field :end_block_index, 2, type: :int64, json_name: "endBlockIndex"
   field :ovk, 3, type: :bytes
-  field :shielded_TRC20_contract_address, 4, type: :bytes
+
+  field :shielded_TRC20_contract_address, 4,
+    type: :bytes,
+    json_name: "shieldedTRC20ContractAddress"
+
   field :events, 5, repeated: true, type: :string
 end
-
 defmodule Protocol.DecryptNotesTRC20.NoteTx do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          position: integer,
-          is_spent: boolean,
-          txid: binary,
-          index: integer,
-          to_amount: String.t(),
-          transparent_to_address: binary
-        }
-
-  defstruct [:note, :position, :is_spent, :txid, :index, :to_amount, :transparent_to_address]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
   field :position, 2, type: :int64
-  field :is_spent, 3, type: :bool
+  field :is_spent, 3, type: :bool, json_name: "isSpent"
   field :txid, 4, type: :bytes
   field :index, 5, type: :int32
-  field :to_amount, 6, type: :string
-  field :transparent_to_address, 7, type: :bytes
+  field :to_amount, 6, type: :string, json_name: "toAmount"
+  field :transparent_to_address, 7, type: :bytes, json_name: "transparentToAddress"
 end
-
 defmodule Protocol.DecryptNotesTRC20 do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          noteTxs: [Protocol.DecryptNotesTRC20.NoteTx.t()]
-        }
-
-  defstruct [:noteTxs]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :noteTxs, 1, repeated: true, type: Protocol.DecryptNotesTRC20.NoteTx
 end
-
 defmodule Protocol.NfTRC20Parameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
-
-  @type t :: %__MODULE__{
-          note: Protocol.Note.t() | nil,
-          ak: binary,
-          nk: binary,
-          position: integer,
-          shielded_TRC20_contract_address: binary
-        }
-
-  defstruct [:note, :ak, :nk, :position, :shielded_TRC20_contract_address]
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
   field :note, 1, type: Protocol.Note
   field :ak, 2, type: :bytes
   field :nk, 3, type: :bytes
   field :position, 4, type: :int64
-  field :shielded_TRC20_contract_address, 5, type: :bytes
-end
 
+  field :shielded_TRC20_contract_address, 5,
+    type: :bytes,
+    json_name: "shieldedTRC20ContractAddress"
+end
 defmodule Protocol.NullifierResult do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          is_spent: boolean
-        }
-
-  defstruct [:is_spent]
-
-  field :is_spent, 1, type: :bool
+  field :is_spent, 1, type: :bool, json_name: "isSpent"
 end
-
 defmodule Protocol.ShieldedTRC20TriggerContractParameters do
   @moduledoc false
-  use Protobuf, syntax: :proto3
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
 
-  @type t :: %__MODULE__{
-          shielded_TRC20_Parameters: Protocol.ShieldedTRC20Parameters.t() | nil,
-          spend_authority_signature: [Protocol.BytesMessage.t()],
-          amount: String.t(),
-          transparent_to_address: binary
-        }
+  field :shielded_TRC20_Parameters, 1,
+    type: Protocol.ShieldedTRC20Parameters,
+    json_name: "shieldedTRC20Parameters"
 
-  defstruct [
-    :shielded_TRC20_Parameters,
-    :spend_authority_signature,
-    :amount,
-    :transparent_to_address
-  ]
+  field :spend_authority_signature, 2,
+    repeated: true,
+    type: Protocol.BytesMessage,
+    json_name: "spendAuthoritySignature"
 
-  field :shielded_TRC20_Parameters, 1, type: Protocol.ShieldedTRC20Parameters
-  field :spend_authority_signature, 2, repeated: true, type: Protocol.BytesMessage
   field :amount, 3, type: :string
-  field :transparent_to_address, 4, type: :bytes
+  field :transparent_to_address, 4, type: :bytes, json_name: "transparentToAddress"
 end
-
 defmodule Protocol.Wallet.Service do
   @moduledoc false
-  use GRPC.Service, name: "protocol.Wallet"
+  use GRPC.Service, name: "protocol.Wallet", protoc_gen_elixir_version: "0.10.0"
 
   rpc :GetAccount, Protocol.Account, Protocol.Account
 
@@ -1877,16 +1078,17 @@ defmodule Protocol.Wallet.Service do
   rpc :GetTransactionListFromPending, Protocol.EmptyMessage, Protocol.TransactionIdList
 
   rpc :GetPendingSize, Protocol.EmptyMessage, Protocol.NumberMessage
+
+  rpc :GetBlock, Protocol.BlockReq, Protocol.BlockExtention
 end
 
 defmodule Protocol.Wallet.Stub do
   @moduledoc false
   use GRPC.Stub, service: Protocol.Wallet.Service
 end
-
 defmodule Protocol.WalletSolidity.Service do
   @moduledoc false
-  use GRPC.Service, name: "protocol.WalletSolidity"
+  use GRPC.Service, name: "protocol.WalletSolidity", protoc_gen_elixir_version: "0.10.0"
 
   rpc :GetAccount, Protocol.Account, Protocol.Account
 
@@ -1965,16 +1167,17 @@ defmodule Protocol.WalletSolidity.Service do
   rpc :GetMarketPairList, Protocol.EmptyMessage, Protocol.MarketOrderPairList
 
   rpc :GetBurnTrx, Protocol.EmptyMessage, Protocol.NumberMessage
+
+  rpc :GetBlock, Protocol.BlockReq, Protocol.BlockExtention
 end
 
 defmodule Protocol.WalletSolidity.Stub do
   @moduledoc false
   use GRPC.Stub, service: Protocol.WalletSolidity.Service
 end
-
 defmodule Protocol.WalletExtension.Service do
   @moduledoc false
-  use GRPC.Service, name: "protocol.WalletExtension"
+  use GRPC.Service, name: "protocol.WalletExtension", protoc_gen_elixir_version: "0.10.0"
 
   rpc :GetTransactionsFromThis, Protocol.AccountPaginated, Protocol.TransactionList
 
@@ -1989,10 +1192,9 @@ defmodule Protocol.WalletExtension.Stub do
   @moduledoc false
   use GRPC.Stub, service: Protocol.WalletExtension.Service
 end
-
 defmodule Protocol.Database.Service do
   @moduledoc false
-  use GRPC.Service, name: "protocol.Database"
+  use GRPC.Service, name: "protocol.Database", protoc_gen_elixir_version: "0.10.0"
 
   rpc :getBlockReference, Protocol.EmptyMessage, Protocol.BlockReference
 
@@ -2007,10 +1209,9 @@ defmodule Protocol.Database.Stub do
   @moduledoc false
   use GRPC.Stub, service: Protocol.Database.Service
 end
-
 defmodule Protocol.Monitor.Service do
   @moduledoc false
-  use GRPC.Service, name: "protocol.Monitor"
+  use GRPC.Service, name: "protocol.Monitor", protoc_gen_elixir_version: "0.10.0"
 
   rpc :GetStatsInfo, Protocol.EmptyMessage, Protocol.MetricsInfo
 end
@@ -2019,10 +1220,9 @@ defmodule Protocol.Monitor.Stub do
   @moduledoc false
   use GRPC.Stub, service: Protocol.Monitor.Service
 end
-
 defmodule Protocol.Network.Service do
   @moduledoc false
-  use GRPC.Service, name: "protocol.Network"
+  use GRPC.Service, name: "protocol.Network", protoc_gen_elixir_version: "0.10.0"
 end
 
 defmodule Protocol.Network.Stub do
