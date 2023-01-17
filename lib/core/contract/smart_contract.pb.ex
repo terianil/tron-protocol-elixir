@@ -64,6 +64,15 @@ defmodule Protocol.SmartContract do
   field :origin_energy_limit, 8, type: :int64, json_name: "originEnergyLimit"
   field :code_hash, 9, type: :bytes, json_name: "codeHash"
   field :trx_hash, 10, type: :bytes, json_name: "trxHash"
+  field :version, 11, type: :int32
+end
+defmodule Protocol.ContractState do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :energy_usage, 1, type: :int64, json_name: "energyUsage"
+  field :energy_factor, 2, type: :int64, json_name: "energyFactor"
+  field :update_cycle, 3, type: :int64, json_name: "updateCycle"
 end
 defmodule Protocol.CreateSmartContract do
   @moduledoc false
@@ -114,4 +123,5 @@ defmodule Protocol.SmartContractDataWrapper do
 
   field :smart_contract, 1, type: Protocol.SmartContract, json_name: "smartContract"
   field :runtimecode, 2, type: :bytes
+  field :contract_state, 3, type: Protocol.ContractState, json_name: "contractState"
 end

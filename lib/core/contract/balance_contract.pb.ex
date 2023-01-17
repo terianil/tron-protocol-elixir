@@ -102,3 +102,44 @@ defmodule Protocol.AccountBalanceResponse do
     type: Protocol.BlockBalanceTrace.BlockIdentifier,
     json_name: "blockIdentifier"
 end
+defmodule Protocol.FreezeBalanceV2Contract do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+  field :frozen_balance, 2, type: :int64, json_name: "frozenBalance"
+  field :resource, 3, type: Protocol.ResourceCode, enum: true
+end
+defmodule Protocol.UnfreezeBalanceV2Contract do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+  field :unfreeze_balance, 2, type: :int64, json_name: "unfreezeBalance"
+  field :resource, 3, type: Protocol.ResourceCode, enum: true
+end
+defmodule Protocol.WithdrawExpireUnfreezeContract do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+end
+defmodule Protocol.DelegateResourceContract do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+  field :resource, 2, type: Protocol.ResourceCode, enum: true
+  field :balance, 3, type: :int64
+  field :receiver_address, 4, type: :bytes, json_name: "receiverAddress"
+  field :lock, 5, type: :bool
+end
+defmodule Protocol.UnDelegateResourceContract do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+  field :resource, 2, type: Protocol.ResourceCode, enum: true
+  field :balance, 3, type: :int64
+  field :receiver_address, 4, type: :bytes, json_name: "receiverAddress"
+end

@@ -15,7 +15,7 @@ defmodule Protocol.ReasonCode do
   field :TOO_MANY_PEERS, 4
   field :DUPLICATE_PEER, 5
   field :INCOMPATIBLE_PROTOCOL, 6
-  field :NULL_IDENTITY, 7
+  field :RANDOM_ELIMINATION, 7
   field :PEER_QUITING, 8
   field :UNEXPECTED_IDENTITY, 9
   field :LOCAL_IDENTITY, 10
@@ -100,6 +100,11 @@ defmodule Protocol.Transaction.Contract.ContractType do
   field :ShieldedTransferContract, 51
   field :MarketSellAssetContract, 52
   field :MarketCancelOrderContract, 53
+  field :FreezeBalanceV2Contract, 54
+  field :UnfreezeBalanceV2Contract, 55
+  field :WithdrawExpireUnfreezeContract, 56
+  field :DelegateResourceContract, 57
+  field :UnDelegateResourceContract, 58
 end
 defmodule Protocol.Transaction.Result.Code do
   @moduledoc false
@@ -374,6 +379,30 @@ defmodule Protocol.Account.AccountResource do
   field :storage_limit, 6, type: :int64, json_name: "storageLimit"
   field :storage_usage, 7, type: :int64, json_name: "storageUsage"
   field :latest_exchange_storage_time, 8, type: :int64, json_name: "latestExchangeStorageTime"
+  field :energy_window_size, 9, type: :int64, json_name: "energyWindowSize"
+
+  field :delegated_frozenV2_balance_for_energy, 10,
+    type: :int64,
+    json_name: "delegatedFrozenV2BalanceForEnergy"
+
+  field :acquired_delegated_frozenV2_balance_for_energy, 11,
+    type: :int64,
+    json_name: "acquiredDelegatedFrozenV2BalanceForEnergy"
+end
+defmodule Protocol.Account.FreezeV2 do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :type, 1, type: Protocol.ResourceCode, enum: true
+  field :amount, 2, type: :int64
+end
+defmodule Protocol.Account.UnFreezeV2 do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :type, 1, type: Protocol.ResourceCode, enum: true
+  field :unfreeze_amount, 3, type: :int64, json_name: "unfreezeAmount"
+  field :unfreeze_expire_time, 4, type: :int64, json_name: "unfreezeExpireTime"
 end
 defmodule Protocol.Account do
   @moduledoc false
@@ -445,6 +474,7 @@ defmodule Protocol.Account do
   field :latest_consume_time, 21, type: :int64, json_name: "latestConsumeTime"
   field :latest_consume_free_time, 22, type: :int64, json_name: "latestConsumeFreeTime"
   field :account_id, 23, type: :bytes, json_name: "accountId"
+  field :net_window_size, 24, type: :int64, json_name: "netWindowSize"
 
   field :account_resource, 26,
     type: Protocol.Account.AccountResource,
@@ -458,6 +488,17 @@ defmodule Protocol.Account do
     repeated: true,
     type: Protocol.Permission,
     json_name: "activePermission"
+
+  field :frozenV2, 34, repeated: true, type: Protocol.Account.FreezeV2
+  field :unfrozenV2, 35, repeated: true, type: Protocol.Account.UnFreezeV2
+
+  field :delegated_frozenV2_balance_for_bandwidth, 36,
+    type: :int64,
+    json_name: "delegatedFrozenV2BalanceForBandwidth"
+
+  field :acquired_delegated_frozenV2_balance_for_bandwidth, 37,
+    type: :int64,
+    json_name: "acquiredDelegatedFrozenV2BalanceForBandwidth"
 end
 defmodule Protocol.Key do
   @moduledoc false
@@ -557,6 +598,7 @@ defmodule Protocol.ResourceReceipt do
   field :net_usage, 5, type: :int64, json_name: "netUsage"
   field :net_fee, 6, type: :int64, json_name: "netFee"
   field :result, 7, type: Protocol.Transaction.Result.ContractResult, enum: true
+  field :energy_penalty_total, 8, type: :int64, json_name: "energyPenaltyTotal"
 end
 defmodule Protocol.MarketOrderDetail do
   @moduledoc false
@@ -601,6 +643,7 @@ defmodule Protocol.Transaction.Result do
   field :shielded_transaction_fee, 22, type: :int64, json_name: "shieldedTransactionFee"
   field :orderId, 25, type: :bytes
   field :orderDetails, 26, repeated: true, type: Protocol.MarketOrderDetail
+  field :withdraw_expire_amount, 27, type: :int64, json_name: "withdrawExpireAmount"
 end
 defmodule Protocol.Transaction.Raw do
   @moduledoc false
@@ -671,6 +714,7 @@ defmodule Protocol.TransactionInfo do
   field :orderId, 25, type: :bytes
   field :orderDetails, 26, repeated: true, type: Protocol.MarketOrderDetail
   field :packingFee, 27, type: :int64
+  field :withdraw_expire_amount, 28, type: :int64, json_name: "withdrawExpireAmount"
 end
 defmodule Protocol.TransactionRet do
   @moduledoc false
@@ -824,6 +868,7 @@ defmodule Protocol.DelegatedResourceAccountIndex do
   field :account, 1, type: :bytes
   field :fromAccounts, 2, repeated: true, type: :bytes
   field :toAccounts, 3, repeated: true, type: :bytes
+  field :timestamp, 4, type: :int64
 end
 defmodule Protocol.NodeInfo.CheatWitnessInfoMapEntry do
   @moduledoc false

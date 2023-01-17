@@ -106,6 +106,44 @@ defmodule Protocol.DelegatedResourceList do
 
   field :delegatedResource, 1, repeated: true, type: Protocol.DelegatedResource
 end
+defmodule Protocol.GetAvailableUnfreezeCountRequestMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+end
+defmodule Protocol.GetAvailableUnfreezeCountResponseMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :count, 1, type: :int64
+end
+defmodule Protocol.CanDelegatedMaxSizeRequestMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :type, 1, type: :int32
+  field :owner_address, 2, type: :bytes, json_name: "ownerAddress"
+end
+defmodule Protocol.CanDelegatedMaxSizeResponseMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :max_size, 1, type: :int64, json_name: "maxSize"
+end
+defmodule Protocol.CanWithdrawUnfreezeAmountRequestMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :owner_address, 1, type: :bytes, json_name: "ownerAddress"
+  field :timestamp, 2, type: :int64
+end
+defmodule Protocol.CanWithdrawUnfreezeAmountResponseMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :amount, 1, type: :int64
+end
 defmodule Protocol.NodeList do
   @moduledoc false
   use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
@@ -337,6 +375,15 @@ defmodule Protocol.TransactionExtention do
     repeated: true,
     type: Protocol.InternalTransaction,
     json_name: "internalTransactions"
+
+  field :energy_penalty, 8, type: :int64, json_name: "energyPenalty"
+end
+defmodule Protocol.EstimateEnergyMessage do
+  @moduledoc false
+  use Protobuf, protoc_gen_elixir_version: "0.10.0", syntax: :proto3
+
+  field :result, 1, type: Protocol.Return
+  field :energy_required, 2, type: :int64, json_name: "energyRequired"
 end
 defmodule Protocol.BlockExtention do
   @moduledoc false
@@ -841,9 +888,13 @@ defmodule Protocol.Wallet.Service do
 
   rpc :FreezeBalance2, Protocol.FreezeBalanceContract, Protocol.TransactionExtention
 
+  rpc :FreezeBalanceV2, Protocol.FreezeBalanceV2Contract, Protocol.TransactionExtention
+
   rpc :UnfreezeBalance, Protocol.UnfreezeBalanceContract, Protocol.Transaction
 
   rpc :UnfreezeBalance2, Protocol.UnfreezeBalanceContract, Protocol.TransactionExtention
+
+  rpc :UnfreezeBalanceV2, Protocol.UnfreezeBalanceV2Contract, Protocol.TransactionExtention
 
   rpc :UnfreezeAsset, Protocol.UnfreezeAssetContract, Protocol.Transaction
 
@@ -852,6 +903,14 @@ defmodule Protocol.Wallet.Service do
   rpc :WithdrawBalance, Protocol.WithdrawBalanceContract, Protocol.Transaction
 
   rpc :WithdrawBalance2, Protocol.WithdrawBalanceContract, Protocol.TransactionExtention
+
+  rpc :WithdrawExpireUnfreeze,
+      Protocol.WithdrawExpireUnfreezeContract,
+      Protocol.TransactionExtention
+
+  rpc :DelegateResource, Protocol.DelegateResourceContract, Protocol.TransactionExtention
+
+  rpc :UnDelegateResource, Protocol.UnDelegateResourceContract, Protocol.TransactionExtention
 
   rpc :UpdateAsset, Protocol.UpdateAssetContract, Protocol.Transaction
 
@@ -937,15 +996,35 @@ defmodule Protocol.Wallet.Service do
 
   rpc :TriggerConstantContract, Protocol.TriggerSmartContract, Protocol.TransactionExtention
 
+  rpc :EstimateEnergy, Protocol.TriggerSmartContract, Protocol.EstimateEnergyMessage
+
   rpc :ClearContractABI, Protocol.ClearABIContract, Protocol.TransactionExtention
 
   rpc :ListWitnesses, Protocol.EmptyMessage, Protocol.WitnessList
 
   rpc :GetDelegatedResource, Protocol.DelegatedResourceMessage, Protocol.DelegatedResourceList
 
+  rpc :GetDelegatedResourceV2, Protocol.DelegatedResourceMessage, Protocol.DelegatedResourceList
+
   rpc :GetDelegatedResourceAccountIndex,
       Protocol.BytesMessage,
       Protocol.DelegatedResourceAccountIndex
+
+  rpc :GetDelegatedResourceAccountIndexV2,
+      Protocol.BytesMessage,
+      Protocol.DelegatedResourceAccountIndex
+
+  rpc :GetCanDelegatedMaxSize,
+      Protocol.CanDelegatedMaxSizeRequestMessage,
+      Protocol.CanDelegatedMaxSizeResponseMessage
+
+  rpc :GetAvailableUnfreezeCount,
+      Protocol.GetAvailableUnfreezeCountRequestMessage,
+      Protocol.GetAvailableUnfreezeCountResponseMessage
+
+  rpc :GetCanWithdrawUnfreezeAmount,
+      Protocol.CanWithdrawUnfreezeAmountRequestMessage,
+      Protocol.CanWithdrawUnfreezeAmountResponseMessage
 
   rpc :ListProposals, Protocol.EmptyMessage, Protocol.ProposalList
 
@@ -1118,9 +1197,27 @@ defmodule Protocol.WalletSolidity.Service do
 
   rpc :GetDelegatedResource, Protocol.DelegatedResourceMessage, Protocol.DelegatedResourceList
 
+  rpc :GetDelegatedResourceV2, Protocol.DelegatedResourceMessage, Protocol.DelegatedResourceList
+
   rpc :GetDelegatedResourceAccountIndex,
       Protocol.BytesMessage,
       Protocol.DelegatedResourceAccountIndex
+
+  rpc :GetDelegatedResourceAccountIndexV2,
+      Protocol.BytesMessage,
+      Protocol.DelegatedResourceAccountIndex
+
+  rpc :GetCanDelegatedMaxSize,
+      Protocol.CanDelegatedMaxSizeRequestMessage,
+      Protocol.CanDelegatedMaxSizeResponseMessage
+
+  rpc :GetAvailableUnfreezeCount,
+      Protocol.GetAvailableUnfreezeCountRequestMessage,
+      Protocol.GetAvailableUnfreezeCountResponseMessage
+
+  rpc :GetCanWithdrawUnfreezeAmount,
+      Protocol.CanWithdrawUnfreezeAmountRequestMessage,
+      Protocol.CanWithdrawUnfreezeAmountResponseMessage
 
   rpc :GetExchangeById, Protocol.BytesMessage, Protocol.Exchange
 
@@ -1153,6 +1250,8 @@ defmodule Protocol.WalletSolidity.Service do
   rpc :GetBrokerageInfo, Protocol.BytesMessage, Protocol.NumberMessage
 
   rpc :TriggerConstantContract, Protocol.TriggerSmartContract, Protocol.TransactionExtention
+
+  rpc :EstimateEnergy, Protocol.TriggerSmartContract, Protocol.EstimateEnergyMessage
 
   rpc :GetTransactionInfoByBlockNum, Protocol.NumberMessage, Protocol.TransactionInfoList
 
