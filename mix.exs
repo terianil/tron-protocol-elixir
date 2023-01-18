@@ -21,9 +21,8 @@ defmodule TronProtocolElixir.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:grpc, github: "elixir-grpc/grpc"},
-      {:google_protos, "~> 0.3.0"},
-      {:cowlib, "~> 2.11.0", override: true}
+      {:grpc, "~> 0.5.0"},
+      {:google_protos, "~> 0.3.0"}
     ]
   end
 end
